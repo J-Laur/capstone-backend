@@ -71,7 +71,7 @@ const login = async (req, res) => {
 
 
 //movie table functions//
-///////in these functions we need to add a component where 
+//in these functions we need to add a component where 
 //it adds the movieID and userID into the table "joint" 
 
 //add a movie
