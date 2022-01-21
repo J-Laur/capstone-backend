@@ -78,7 +78,9 @@ const login = async (req, res) => {
 const addMovie = async (req, res) => {
     try {
         const {description} = req.body;
+        //change this to push into move list
         const newTodo = await pool.query("INSERT INTO todo (description) VALUES($1) RETURNING *", [description]);
+        //insert the current id of the person logged in and along with the movie you are adding rn
 
         res.json(newTodo.rows[0]);
     } catch (err) {
@@ -89,6 +91,10 @@ const addMovie = async (req, res) => {
 //get all movies
 const getAllMovie = async (req, res) => {
     try {
+        //no longer be selecting all from to do
+        //first select the user ID from the jhoint list
+        //and filter all the movies for thart person
+        //then take those id and map it and get those movies from movie list
         const allTodos = await pool.query("SELECT * FROM todo");
         res.json(allTodos.rows)
     } catch (err) {
