@@ -23,6 +23,7 @@ app.post("/users", db.signup);
 app.post("/login", db.login);
 
 //movie
+//need to change this part to work with joint
 app.post("/movieList", db.addMovie);
 app.get("/movieList", db.gotAllMovie);
 app.get("/movieList/:id", getMovie);
