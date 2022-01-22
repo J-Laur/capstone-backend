@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require("./db");
-const { json } = require("express");
 const compression = require("compression"); 
 const bodyParser = require("body-parser"); 
 const db = require("./db"); 
@@ -25,7 +23,12 @@ app.post("/login", db.login);
 //movie
 //need to change this part to work with joint
 app.post("/movieList", db.addMovie);
-app.get("/movieList", db.gotAllMovie);
-app.get("/movieList/:id", getMovie);
-app.put("/movieList/:id", editMovie);
-app.delete("/movieList/:id", deleteMovie);
+app.get("/movieList", db.getAllMovie);
+app.get("/movieList/:id", db.getMovie);
+app.put("/movieList/:id", db.editMovie);
+app.delete("/movieList/:id", db.deleteMovie);
+
+
+app.listen(5000, () => {
+    console.log("server from port 5000");
+});

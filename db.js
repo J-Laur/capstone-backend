@@ -141,4 +141,4 @@ const deleteMovie = async (req, res) => {
 
 
 
-module.exports = {signup, login, addMovie, getAllMOvie, getMovie, editMovie, deleteMovie, pool};
+module.exports = {signup, login, addMovie, getAllMovie, getMovie, editMovie, deleteMovie, pool};
