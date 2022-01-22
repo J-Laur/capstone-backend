@@ -95,6 +95,7 @@ const getAllMovie = async (req, res) => {
         //first select the user ID from the jhoint list
         //and filter all the movies for thart person
         //then take those id and map it and get those movies from movie list
+        //push to cw
         const allTodos = await pool.query("SELECT * FROM todo");
         res.json(allTodos.rows)
     } catch (err) {
