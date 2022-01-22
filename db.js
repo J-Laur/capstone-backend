@@ -41,33 +41,33 @@ const signup = async (req, res) => {
 };
 
 //login 
+
+
 const login = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      let errors = {};
-
-      const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-
-      if (user.rows.length === 0) {
-        return res.status(404).json({
-          error: {
-            message: "User not found",
-          },
-        });
-      }
-
-      const isMatch = await compare(password, user.rows[0].password);
-
-      if (!isMatch) { error.message = "Incorrect password";}
-
-      if(Object.keys(error).length > 0){return response.status(400).json(errors)}
-
-      res.json({ success: true, data: user.rows[0]});
-    } catch (err) {
-      console.error("login not working");
+  try {
+    const { email, password } = req.body;
+    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    if (user.rows.length === 0) {
+      return res.status(404).json({
+        error: {
+          message: "User not found",
+        },
+      });
     }
+    if (!(password === user.rows[0].password)) {
+      return res.status(401).json({
+        error: {
+          message: "Incorrect password",
+        },
+      });
+    }
+    res.status(200).json({ success: true });
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
 };
-
 
 
 //movie table functions//
@@ -82,7 +82,7 @@ const addMovie = async (req, res) => {
         const newMovie = await pool.query("INSERT INTO movie (moviename) VALUES($1) RETURNING *", [moviename]);
         //insert the current id of the person logged in and along with the movie you are adding rn
 
-        res.json(newTodo.rows[0]);
+        res.json(newMovie.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
@@ -108,7 +108,7 @@ const getMovie = async (req, res) => {
         const {id} = req.params;
         const movie = await pool.query("SELECT * FROM movie WHERE movie_id = $1", [id]);
 
-        res.json(todo.rows[0])
+        res.json(movie.rows[0])
     } catch (err) {
         console.error(err.message);
     }
@@ -137,7 +137,6 @@ const deleteMovie = async (req, res) => {
         console.error(err.message);
     }
 }
-
 
 
 module.exports = {signup, login, addMovie, getAllMovie, getMovie, editMovie, deleteMovie, pool};
