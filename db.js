@@ -2,10 +2,10 @@ const Pool = require("pg").Pool;
 
 const pool = new Pool({
     user: "postgres",
-    password: "1234", //just replace this with your password to test
+    password: "8934", 
     host: "localhost",
     port: 5432,
-    database: "myMovie"
+    database: "mymovie"
 });
 
 //users table functions//
@@ -77,9 +77,9 @@ const login = async (req, res) => {
 //add a movie
 const addMovie = async (req, res) => {
     try {
-        const {description} = req.body;
+        const {moviename} = req.body;
         //change this to push into move list
-        const newTodo = await pool.query("INSERT INTO todo (description) VALUES($1) RETURNING *", [description]);
+        const newMovie = await pool.query("INSERT INTO movie (moviename) VALUES($1) RETURNING *", [moviename]);
         //insert the current id of the person logged in and along with the movie you are adding rn
 
         res.json(newTodo.rows[0]);
@@ -95,8 +95,8 @@ const getAllMovie = async (req, res) => {
         //first select the user ID from the jhoint list
         //and filter all the movies for thart person
         //then take those id and map it and get those movies from movie list
-        const allTodos = await pool.query("SELECT * FROM todo");
-        res.json(allTodos.rows)
+        const allMovies = await pool.query("SELECT * FROM movie");
+        res.json(allMovies.rows)
     } catch (err) {
         console.error(err.message);
     }
@@ -106,7 +106,7 @@ const getAllMovie = async (req, res) => {
 const getMovie = async (req, res) => {
     try {
         const {id} = req.params;
-        const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [id]);
+        const movie = await pool.query("SELECT * FROM movie WHERE movie_id = $1", [id]);
 
         res.json(todo.rows[0])
     } catch (err) {
@@ -118,10 +118,10 @@ const getMovie = async (req, res) => {
 const editMovie = async (req, res) => {
     try {
         const {id} = req.params;
-        const {description} = req.body;
-        const updateTodo = await pool.query("UPDATE todo SET description = $1 WHERE todo_id = $2", [description, id]);
+        const {moviename} = req.body;
+        const updateMovie = await pool.query("UPDATE movie SET moviename = $1 WHERE movie_id = $2", [moviename, id]);
 
-        res.json("Todo is updated")
+        res.json("Movie list is updated")
     } catch (err) {
         console.error(err.message);
     }
@@ -130,9 +130,9 @@ const editMovie = async (req, res) => {
 const deleteMovie = async (req, res) => {
     try {
         const {id} = req.params;
-        const deleteTodo = await pool.query("DELETE FROM todo WHERE todo_id = $1", [id]);
+        const deleteMovie = await pool.query("DELETE FROM movie WHERE movie_id = $1", [id]);
 
-        res.json("Todo was deleted")
+        res.json("Movie was deleted")
     } catch (err) {
         console.error(err.message);
     }
@@ -140,4 +140,4 @@ const deleteMovie = async (req, res) => {
 
 
 
-module.exports = {signup, login, addMovie, getAllMOvie, getMovie, editMovie, deleteMovie, pool};
+module.exports = {signup, login, addMovie, getAllMovie, getMovie, editMovie, deleteMovie, pool};

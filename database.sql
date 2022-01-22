@@ -1,4 +1,4 @@
-CREATE DATABASE myMovie;
+CREATE DATABASE mymovie;
 
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY,
@@ -9,7 +9,7 @@ CREATE TABLE users(
 
 CREATE TABLE movie(
     movie_id SERIAL PRIMARY KEY,
-    movieName VARCHAR(255) NOT NULL
+    moviename VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE joint(
