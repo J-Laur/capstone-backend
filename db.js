@@ -11,7 +11,7 @@ const pool = new Pool({
 //users table functions//
 
 //create an user
-const signup = async (req, res) => {
+const signup = async (req, res) => {  //signup page
     try {
       const { username, email, password } = req.body;
       let errors = {};
@@ -29,7 +29,7 @@ const signup = async (req, res) => {
         return res.status(400).json(errors);
       }
   
-      const newUser = await pool.query(
+      const newUser = await pool.query( 
         "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
         [username, email, password]
       );
@@ -42,8 +42,7 @@ const signup = async (req, res) => {
 
 //login 
 
-
-const login = async (req, res) => {
+const login = async (req, res) => {  //validates user with users table
   try {
     const { email, password } = req.body;
     const user = await pool.query("SELECT * FROM users WHERE email = $1", [
@@ -71,8 +70,6 @@ const login = async (req, res) => {
 
 
 //movie table functions//
-//in these functions we need to add a component where 
-//it adds the movieID and userID into the table "joint" 
 
 //add a movie
 const addMovie = async (req, res) => {
@@ -88,13 +85,9 @@ const addMovie = async (req, res) => {
     }
 }
 
-//get all movies
-const getAllMovie = async (req, res) => {
+//get all movies 
+const getAllMovie = async (req, res) => { //returns all movies in list
     try {
-        //no longer be selecting all from to do
-        //first select the user ID from the jhoint list
-        //and filter all the movies for thart person
-        //then take those id and map it and get those movies from movie list
         const allMovies = await pool.query("SELECT * FROM movie");
         res.json(allMovies.rows)
     } catch (err) {
@@ -103,7 +96,7 @@ const getAllMovie = async (req, res) => {
 }
 
 //get a movie
-const getMovie = async (req, res) => {
+const getMovie = async (req, res) => {  //specify movie id, returns movie
     try {
         const {id} = req.params;
         const movie = await pool.query("SELECT * FROM movie WHERE movie_id = $1", [id]);
@@ -115,7 +108,7 @@ const getMovie = async (req, res) => {
 }
 
 //edit a movie
-const editMovie = async (req, res) => {
+const editMovie = async (req, res) => {  //use PUT to edit movie title
     try {
         const {id} = req.params;
         const {moviename} = req.body;
@@ -127,7 +120,7 @@ const editMovie = async (req, res) => {
     }
 }
 //delete a movie
-const deleteMovie = async (req, res) => {
+const deleteMovie = async (req, res) => {  //delete specified movie using id
     try {
         const {id} = req.params;
         const deleteMovie = await pool.query("DELETE FROM movie WHERE movie_id = $1", [id]);
@@ -139,4 +132,4 @@ const deleteMovie = async (req, res) => {
 }
 
 
-module.exports = {signup, login, addMovie, getAllMovie, getMovie, editMovie, deleteMovie, pool};
+module.exports = {signup, login, addMovie, getAllMovie, getMovie, editMovie, deleteMovie, pool}; //export all modules
