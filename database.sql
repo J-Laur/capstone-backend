@@ -13,7 +13,7 @@ CREATE TABLE movie(
 );
 
 CREATE TABLE joint(
-    joint_FK SERIAL PRIMARY KEY,
-    userID_FK REFERENCES users(user_id),
-    movieID_FK REFERENCES movie(movie_id)
+    joint_id SERIAL PRIMARY KEY,
+    userID_FK INTEGER REFERENCES users(user_id),
+    movieID_FK INTEGER REFERENCES movie(movie_id)
 );
