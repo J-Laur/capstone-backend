@@ -112,7 +112,7 @@ const getAllMovie = async (req, res) => {     //returns all movies in list
       
 
        for(let i = 0; i < jointMovieLength; i++) {
-         array[i] = getJointMovie.rows[i].movieid_fk;
+         array[i] = getJointMovie.rows[i].movieid_fk; 
    
        }
  
