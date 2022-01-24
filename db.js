@@ -10,7 +10,8 @@ const pool = new Pool({
 
  
 
-    let currentUser = 0; //placeholder variable for current user id
+let currentUser = 0; //placeholder variable for current user id
+
 
 
 //users table functions//
@@ -97,12 +98,39 @@ const addMovie = async (req, res) => {
 //get all movies  //CONNECTED WITH JOINT
 const getAllMovie = async (req, res) => {     //returns all movies in list
     try {
-        //const allMovies = await pool.query("SELECT * FROM movie");
+    //  const allMovies = await pool.query("SELECT * FROM movie");
 
-        const getJointMovie = await pool.query("SELECT movieid_FK FROM joint WHERE userid_FK = $1", [currentUser]);  //gets all movies for current user
 
-        //res.json(allMovies.rows)
-        res.json(getJointMovie.rows);
+
+       const getJointMovie = await pool.query("SELECT movieid_FK FROM joint WHERE userid_FK = $1", [currentUser]);  //gets all movies for current user
+
+
+
+       let jointMovieLength = getJointMovie.rows.length;
+    
+       let array = [];
+      
+
+       for(let i = 0; i < jointMovieLength; i++) {
+         array[i] = getJointMovie.rows[i].movieid_fk;
+   
+       }
+ 
+    
+       let arrString = array.toString();
+       
+
+       const getAllUserMovie = await pool.query("SELECT * FROM movie WHERE movie_id IN (" +(arrString) +")");  //gets all movies for current user
+   
+    
+        res.json(getAllUserMovie.rows);
+        console.log(array);
+       console.log(array2);
+
+       
+      
+
+ 
     } catch (err) {
         console.error(err.message);
     }
@@ -138,7 +166,7 @@ const deleteMovie = async (req, res) => {  //delete specified movie using id
     try {
         const {id} = req.params;
 
-        const deleteJointMovie = await pool.query("DELETE FROM joint WHERE movieid_FK = $1", [id]);  //deletes movie from joint table
+       const deleteJointMovie = await pool.query("DELETE FROM joint WHERE movieid_FK = $1", [id]);  //deletes movie from joint table
 
 
         const deleteMovie = await pool.query("DELETE FROM movie WHERE movie_id = $1", [id]);  //deletes movie from movie table
